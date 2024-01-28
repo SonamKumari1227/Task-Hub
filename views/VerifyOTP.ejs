@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    form {
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Enter OTP for Verification</h1>
+  <form id="otpForm">
+    <label for="otp">Enter OTP:</label>
+    <input type="text" id="otp" name="otp" maxlength="6" required>
+    <br>
+    <button type="button" onclick="verifyOTP()">Verify OTP</button>
+  </form>
+
+  <script>
+    function verifyOTP() {
+      const enteredOTP = document.getElementById('otp').value;
+
+      // Make an AJAX request to your server to verify the entered OTP
+      // You can use Fetch or XMLHttpRequest to make the request
+
+      // Example using Fetch:
+      fetch('/api/verifyOTP', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ verificationSid: 'YOUR_VERIFICATION_SID', otp: enteredOTP }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to verify OTP. Please try again.');
+      });
+    }
+  </script>
+</body>
+</html>

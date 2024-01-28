@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+console.log('MongoDB Connection String:', process.env.MONGODB_URI);
 
-const MONGODB_URI = 'mongodb+srv://ersonam2712kumari:la0E6nm98Gvm2Qux@user-cluster.nvuc77z.mongodb.net/UserInfo?retryWrites=true&w=majority';
+const MONGODB_URI = process.env.MONGODB_URI || 'defaultFallbackValueIfEnvVarNotSet';
+// Use MONGODB_URI in your application
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,

@@ -1,0 +1,126 @@
+<!-- login.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Style for the "Forget Password" link */
+        .forget-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .forget-password a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .forget-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm" method="post" action="/api/login">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" >Login</button>
+        </form>
+
+        <!-- Forget Password link -->
+        <div class="forget-password">
+            <button id="forgetPassword">Forget Password?</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+    // Function to handle the click event on the dRegister button
+    $('#forgetPassword').click(function() {
+        // Send an AJAX request to the server to handle the registration
+        $.ajax({
+            type: 'GET',
+            url: '/api/forgetPassowrd', 
+            data: {
+                // Include any data needed for registration
+            },
+            success: function(response) {
+                // Handle the response from the server
+                console.log(response);
+                // Optionally, update the UI or redirect to the register page
+                window.location.href = '/api/forgetPassowrd'; // Replace with your actual register page URL
+            },
+            error: function(error) {
+                console.error(error);
+                // Handle the error if needed
+            }
+        });
+    });
+
+   
+});
+             
+        
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TaskMangaer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+        .completed-task {
+    background-color: #d4edda; /* Set your desired green color */
+}
+
+    </style>
+  </head>
+  
+  <body>
+
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="https://www.freepik.com/photos/nature"  width="30" height="24" class="d-inline-block align-text-top">
+          <b> Welcome <i><%= username %></i></b> 
+          </a>
+        </div>
+      </nav>
+      <div class="container mt-4">
+        <!-- Task Section -->
+        <div class="row">
+          <div class="col-md-8 offset-md-2">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Task Section</h4>
+                <form id="taskForm">
+                  <div class="mb-3">
+                    <label for="taskInput" class="form-label">Enter Task:</label>
+                    <input type="text" class="form-control" id="taskInput" placeholder="Task" required>
+                  </div>
+                  <button type="button" class="btn btn-primary" id="addTaskBtn" >Add Task</button>
+                  <button type="button" class="btn btn-danger" >Clear Tasks</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+    
+      <!-- Display Tasks -->
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <ul class="list-group" id="taskList">
+            <!-- Task items will be dynamically added here -->
+        </ul>
+    </div>
+</div>
+      
+    
+      <script>
+$(document).ready(function () {
+  function fetchAndDisplayTasks() {
+    const userId = '<%= id %>';
+
+    $.ajax({
+      type: 'GET',
+      url: `/api/getTasks/${userId}`,
+      success: function (response) {
+        const tasks = response.tasks;
+
+        $('#taskList').empty();
+
+        tasks.forEach(task => {
+          const taskItem = `
+            <li id="${task._id}" class="list-group-item d-flex justify-content-between align-items-center ${task.completed ? 'completed-task' : ''}">
+              ${task.description}
+              <div>
+                <button type="button" class="btn btn-success btn-sm mark-complete" data-task-id="${task._id}">Mark as Complete</button>
+                <button type="button" class="btn btn-danger btn-sm delete-task" data-task-id="${task._id}">Delete Task</button>
+              </div>
+            </li>
+          `;
+          $('#taskList').append(taskItem);
+        });
+      },
+      error: function (error) {
+        console.error(error.responseJSON.error);
+      }
+    });
+  }
+
+  // Event handler for Add Task button
+  $('#addTaskBtn').on('click', function () {
+    const userId = '<%= id %>';
+    const description = $('#taskInput').val();
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/addTask',
+      data: { userId, description },
+      success: function (response) {
+        console.log(response.message);
+        $('#taskInput').val('');
+        fetchAndDisplayTasks();
+      },
+      error: function (error) {
+        console.error(error.responseJSON.error);
+      }
+    });
+  });
+
+  // Event delegation for Mark as Complete and Delete Task buttons
+ // Event delegation for Mark as Complete and Delete Task buttons
+$('#taskList').on('click', '.mark-complete', function () {
+    const taskId = $(this).data('task-id');
+
+    if (taskId) {
+        $.ajax({
+            type: 'PUT',
+            url: `/api/markComplete/${taskId}`,
+            success: function (response) {
+                console.log(response.message);
+
+                // Find the list item corresponding to the task ID and add the completed-task class
+                $(`#taskList li#${taskId}`).addClass('completed-task');
+
+                fetchAndDisplayTasks();
+            },
+            error: function (error) {
+                console.error(error.responseJSON.error);
+            }
+        });
+    } else {
+        console.error('Task ID not found');
+    }
+});
+
+
+  $('#taskList').on('click', '.delete-task', function () {
+    const taskId = $(this).data('task-id');
+
+    $.ajax({
+      type: 'DELETE',
+      url: `/api/deleteTask/${taskId}`,
+      success: function (response) {
+        console.log(response.message);
+        fetchAndDisplayTasks();
+      },
+      error: function (error) {
+        console.error(error.responseJSON.error);
+      }
+    });
+  });
+
+  // Initial fetch and display of tasks
+  fetchAndDisplayTasks();
+});
+
+
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+
+
+
+
+
+

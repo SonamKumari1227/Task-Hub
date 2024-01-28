@@ -3,20 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Information Form</title>
+    <title>Responsive Buttons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2d144b;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        button {
+            background-color: #fff;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            border: 2px solid #f0eded;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin: 10px;
+            outline: none;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            color: #fff;
+        }
+
+        #Register {
+            background-color: #071a33; /* Light Grey Blue */
+            border-color: #a9a9a9; /* Dark Grey */
+            color: #efeaea;
+        }
+
+        #Register:hover {
+            background-color: #45a049; /* Slate Gray */
+            color: #fff;
+        }
+
+        #login {
+            background-color: #071a33; /* Light Sky Blue */
+            border-color: #eff3f7; /* Steel Blue */
+            color: #f6efef;
+        }
+
+        #login:hover {
+            background-color: #45a049; /* Cadet Blue */
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <h2>User Information Form</h2>
-    <form id="userForm" method="post" action="/store" >
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-
-        <label for="favFood">Favorite Food:</label>
-        <input type="text" id="favFood" name="favFood" required><br>
-
-        <button type="submit">Submit</button>
-    </form>
-
+    <button id="Register" >Register</button>
+    <button id="login">Login</button>
    
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // public/js/main.js
+
+$(document).ready(function() {
+    // Function to handle the click event on the dRegister button
+    $('#Register').click(function() {
+        // Send an AJAX request to the server to handle the registration
+        $.ajax({
+            type: 'GET',
+            url: '/api/register', 
+            data: {
+                // Include any data needed for registration
+            },
+            success: function(response) {
+                // Handle the response from the server
+                console.log(response);
+                // Optionally, update the UI or redirect to the register page
+                window.location.href = '/api/register'; // Replace with your actual register page URL
+            },
+            error: function(error) {
+                console.error(error);
+              
+            }
+        });
+    });
+
+
+    $('#login').click(function() {
+        // Send an AJAX request to the server to handle the login
+        $.ajax({
+            type: 'GET',
+            url: '/api/login', // Your login route
+            data: {
+                // Include any data needed for login
+            },
+            success: function(response) {
+                // Handle the response from the server
+                console.log(response);
+                // Optionally, update the UI or redirect to the login page
+                window.location.href = '/api/login'; // Replace with your actual login page URL
+            },
+            error: function(error) {
+                console.error(error);
+                // Handle the error if needed
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
