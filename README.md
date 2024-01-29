@@ -1,4 +1,5 @@
 # The Art of Data: A Beginner's Handbook to Data Science
+## Demystifying Data Science: A Beginner's Guide
 
 Hey there, curious minds! Have you ever wondered about the magic behind Netflix recommendations or how Siri understands your voice commands? Well, my friends, welcome to the fascinating world of data science!
 
