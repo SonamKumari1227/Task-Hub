@@ -186,6 +186,10 @@ router.put('/api/markComplete/:taskId', async (req, res) => {
 
 router.delete('/api/deleteTask/:taskId', async (req, res) => {
     try {
+
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
         const taskId = req.params.taskId;
         const userId = req.user._id;
 
@@ -193,10 +197,7 @@ router.delete('/api/deleteTask/:taskId', async (req, res) => {
 
         const task = await TaskModel.findByIdAndDelete(taskId);
 
-        if (!task) {
-            return res.status(404).json({ error: 'Task not found' });
-        }
-
+       
         res.status(200).json({ message: 'Task deleted successfully' });
     } catch (error) {
         console.error(error);
